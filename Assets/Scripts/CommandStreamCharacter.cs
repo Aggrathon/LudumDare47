@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterStreanController : MonoBehaviour
+public class CommandStreamCharacter : MonoBehaviour
 {
 
     public enum Action
@@ -14,7 +14,8 @@ public class CharacterStreanController : MonoBehaviour
         RightUp,
         Jump,
         Slide,
-        Attack
+        Attack,
+        Disable
     }
 
     public struct Event
@@ -37,7 +38,7 @@ public class CharacterStreanController : MonoBehaviour
 
     [Header("Vertical Movement")]
     public bool canJump = true;
-    public float jumpSpeed = 400f;
+    public float jumpSpeed = 500f;
     [SerializeField] Vector3 groundCheckPoint = Vector2.zero;
     [SerializeField] LayerMask groundCheckMask;
     [SerializeField] float groundCheckRadius = 0.05f;
@@ -51,6 +52,7 @@ public class CharacterStreanController : MonoBehaviour
     [Header("Attacking")]
     public bool canAttack = true;
 
+    // Privates
     private float startTime;
     private Vector3 startPos;
     private List<Event> stream;
@@ -62,13 +64,15 @@ public class CharacterStreanController : MonoBehaviour
     private bool hasDoubleJumped;
     private bool isGrounded;
 
-    private void OnEnable()
+    private void Start()
     {
         if (stream == null)
             stream = new List<Event>();
         rb = GetComponent<Rigidbody2D>();
         startPos = transform.position;
         Reset();
+        if (GameManager.instance != null)
+            GameManager.instance.RegisterCharacter(this);
     }
 
     void Update()
@@ -158,6 +162,9 @@ public class CharacterStreanController : MonoBehaviour
             case Action.Attack:
                 Debug.LogWarning("Attacking not implemented");
                 break;
+            case Action.Disable:
+                gameObject.SetActive(false);
+                break;
             default:
                 Debug.LogError("Action not implemented");
                 break;
@@ -184,6 +191,11 @@ public class CharacterStreanController : MonoBehaviour
     {
         stream.Add(new Event(Time.time - startTime, action));
         TakeAction(action);
+    }
+
+    public void AddActionToStreamNow(Action action)
+    {
+        stream.Add(new Event(Time.time - startTime, action));
     }
 
     private void FixedUpdate()
@@ -217,11 +229,17 @@ public class CharacterStreanController : MonoBehaviour
         slideTime = 0f;
         hasDoubleJumped = false;
         isGrounded = true;
+        gameObject.SetActive(true);
     }
 
     public void SetStream(List<Event> stream)
     {
         this.stream = stream;
+    }
+
+    public List<Event> GetStream()
+    {
+        return stream;
     }
 
     private void OnDrawGizmosSelected()
