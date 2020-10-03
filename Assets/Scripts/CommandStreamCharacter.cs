@@ -133,12 +133,10 @@ public class CommandStreamCharacter : MonoBehaviour
 
     internal void SetSpawn(Vector3 pos)
     {
+        if (Vector3.Distance(startPos, pos) < 1f)
+            return;
         startPos = pos;
-        stream.Clear();
-        if (horisontalMovement > 0)
-            AddActionToStreamNow(Action.RightDown);
-        else if (horisontalMovement < 0)
-            AddActionToStreamNow(Action.LeftDown);
+        Reset();
     }
 
     void TakeAction(Action action)
