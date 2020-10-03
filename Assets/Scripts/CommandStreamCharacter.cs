@@ -15,22 +15,28 @@ public class CommandStreamCharacter : MonoBehaviour
         Jump,
         Slide,
         Attack,
-        Disable
+        Disable,
+        Status,
     }
 
     public struct Event
     {
         public float time;
         public Action action;
+        public Vector2 position;
+        public Vector2 velocity;
 
-        public Event(float time, Action action)
+        public Event(float time, Action action, Vector2 position, Vector2 velocity)
         {
             this.time = time;
             this.action = action;
+            this.position = position;
+            this.velocity = velocity;
         }
     }
 
     public bool activePlayer = false;
+    // public float positionPingInterval = 0.1f;
 
     [Header("Horisontal Movement")]
     public float runSpeed = 10f;
@@ -47,7 +53,6 @@ public class CommandStreamCharacter : MonoBehaviour
     public bool canWallJump = true;
     [SerializeField] Vector3 wallCheckPointLeft = Vector2.left;
     [SerializeField] Vector3 wallCheckPointRight = Vector2.right;
-
 
     [Header("Sliding")]
     public bool canSlide = true;
@@ -111,7 +116,6 @@ public class CommandStreamCharacter : MonoBehaviour
             {
                 if (canSlide && Time.time > slideTime)
                 {
-                    slideTime = Time.time + slideCooldown;
                     RecordAction(Action.Slide);
                 }
             }
@@ -120,15 +124,31 @@ public class CommandStreamCharacter : MonoBehaviour
                 if (canAttack)
                     RecordAction(Action.Attack);
             }
+            // if (stream.Count > 0)
+            // {
+            //     if (Time.time - stream[stream.Count - 1].time - startTime > positionPingInterval)
+            //         AddActionToStreamNow(Action.Status);
+            // }
         }
         else
         {
             if (stream.Count > index && Time.time - startTime >= stream[index].time)
             {
+                if (Vector3.Distance(stream[index].position, rb.position) < groundCheckRadius * 0.8)
+                {
+                    // transform.position = stream[index].position;
+                    rb.position = stream[index].position;
+                    rb.velocity = stream[index].velocity;
+                }
                 TakeAction(stream[index].action);
                 index++;
             }
         }
+    }
+
+    internal Vector3 GetSpawn()
+    {
+        return startPos;
     }
 
     internal void SetSpawn(Vector3 pos)
@@ -136,7 +156,8 @@ public class CommandStreamCharacter : MonoBehaviour
         if (Vector3.Distance(startPos, pos) < 1f)
             return;
         startPos = pos;
-        Reset();
+        if (rb != null)
+            Reset();
     }
 
     void TakeAction(Action action)
@@ -192,6 +213,7 @@ public class CommandStreamCharacter : MonoBehaviour
                 break;
             case Action.Slide:
                 {
+                    slideTime = Time.time + slideCooldown;
                     var vel = rb.velocity;
                     vel.x += horisontalMovement * slideSpeed;
                     rb.velocity = vel;
@@ -204,6 +226,8 @@ public class CommandStreamCharacter : MonoBehaviour
                 break;
             case Action.Disable:
                 gameObject.SetActive(false);
+                break;
+            case Action.Status:
                 break;
             default:
                 Debug.LogError("Action not implemented");
@@ -229,13 +253,13 @@ public class CommandStreamCharacter : MonoBehaviour
 
     void RecordAction(Action action)
     {
-        stream.Add(new Event(Time.time - startTime, action));
+        stream.Add(new Event(Time.time - startTime, action, rb.position, rb.velocity));
         TakeAction(action);
     }
 
     public void AddActionToStreamNow(Action action)
     {
-        stream.Add(new Event(Time.time - startTime, action));
+        stream.Add(new Event(Time.time - startTime, action, rb.position, rb.velocity));
     }
 
     private void FixedUpdate()
@@ -260,15 +284,18 @@ public class CommandStreamCharacter : MonoBehaviour
 
     public void Reset()
     {
-        transform.position = startPos;
         startTime = Time.time;
         index = 0;
+        transform.position = startPos;
+        rb.position = startPos;
         rb.velocity = Vector2.zero;
         velocity = Vector2.zero;
         rb.WakeUp();
         slideTime = 0f;
         hasDoubleJumped = false;
         atGround = true;
+        atRightWall = false;
+        atLeftWall = false;
         gameObject.SetActive(true);
         if (activePlayer)
         {

@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.R))
@@ -88,6 +87,7 @@ public class GameManager : MonoBehaviour
                 ghost = Instantiate(ghostPrefab, activePlayer.transform.position, activePlayer.transform.rotation);
             }
             ghost.SetStream(stream);
+            ghost.SetSpawn(activePlayer.GetSpawn());
         }
         startTime = Time.time;
     }
