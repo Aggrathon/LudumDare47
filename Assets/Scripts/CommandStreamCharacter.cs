@@ -215,21 +215,25 @@ public class CommandStreamCharacter : MonoBehaviour
         transform.position = startPos;
         startTime = Time.time;
         index = 0;
-        rb.WakeUp();
         rb.velocity = Vector2.zero;
         velocity = Vector2.zero;
+        rb.WakeUp();
+        slideTime = 0f;
+        hasDoubleJumped = false;
+        isGrounded = true;
+        gameObject.SetActive(true);
         if (activePlayer)
         {
             stream.Clear();
+            if (horisontalMovement > 0)
+                RecordAction(Action.RightDown);
+            else if (horisontalMovement < 0)
+                RecordAction(Action.LeftDown);
         }
         else
         {
             horisontalMovement = 0f;
         }
-        slideTime = 0f;
-        hasDoubleJumped = false;
-        isGrounded = true;
-        gameObject.SetActive(true);
     }
 
     public void SetStream(List<Event> stream)

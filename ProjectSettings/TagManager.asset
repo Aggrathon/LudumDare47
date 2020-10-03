@@ -44,11 +44,11 @@ TagManager:
   - name: Level
     uniqueID: 1720264129
     locked: 0
-  - name: Ghosts
-    uniqueID: 2131633027
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ghosts
+    uniqueID: 2131633027
     locked: 0
   - name: Player
     uniqueID: 4038535317
