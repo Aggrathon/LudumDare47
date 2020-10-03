@@ -799,7 +799,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1989327968}
   - component: {fileID: 1989327967}
-  - component: {fileID: 1989327969}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -820,7 +819,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 3044019577691794970, guid: 5d2a0bb56a6690d4890e14da7332b753, type: 3}
-  timeResetTime: Infinity
+  timerBottom: {fileID: 98708177}
+  timerTop: {fileID: 387941041}
+  resetTime: 12
 --- !u!4 &1989327968
 Transform:
   m_ObjectHideFlags: 0
@@ -836,21 +837,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1989327969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989327966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f444159638924d94fa15eac326b3db1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bottom: {fileID: 98708177}
-  top: {fileID: 387941041}
-  resetTime: 12
 --- !u!4 &2071992500 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6139256870918935146, guid: 836082154b235644db7d5d6fca12db56, type: 3}
@@ -906,7 +892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

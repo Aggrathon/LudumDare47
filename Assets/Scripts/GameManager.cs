@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,14 +9,19 @@ public class GameManager : MonoBehaviour
     public static GameManager instance { get; protected set; }
 
     [SerializeField] CommandStreamCharacter ghostPrefab;
+    [SerializeField] Image timerBottom;
+    [SerializeField] Image timerTop;
+    public float resetTime = 12f;
 
     private List<CommandStreamCharacter> ghosts;
     private CommandStreamCharacter activePlayer;
+    private float startTime;
 
     private void Awake()
     {
         ghosts = new List<CommandStreamCharacter>();
         instance = this;
+        startTime = Time.time;
     }
 
     private void OnDestroy()
@@ -37,6 +43,18 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.R))
             ResetTime();
+        if (timerTop && timerBottom)
+        {
+            var frac = (Time.time - startTime) / resetTime;
+            if (frac >= 1f)
+            {
+                ResetTime();
+                startTime = Time.time;
+                frac = 0.0f;
+            }
+            timerTop.fillAmount = 1.0f - frac;
+            timerBottom.fillAmount = frac;
+        }
     }
 
     public void ResetTime()
@@ -55,5 +73,6 @@ public class GameManager : MonoBehaviour
             ghost.SetStream(stream);
             ghosts.Add(ghost);
         }
+        startTime = Time.time;
     }
 }
