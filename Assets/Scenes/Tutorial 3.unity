@@ -2462,7 +2462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6139256870918935151, guid: 836082154b235644db7d5d6fca12db56, type: 3}
       propertyPath: canDoubleJump
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6139256870918935151, guid: 836082154b235644db7d5d6fca12db56, type: 3}
       propertyPath: canJump

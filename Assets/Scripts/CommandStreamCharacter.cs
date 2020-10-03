@@ -35,11 +35,11 @@ public class CommandStreamCharacter : MonoBehaviour
     [Header("Horisontal Movement")]
     public float runSpeed = 10f;
     public float smoothTime = 0.1f;
-    public float smoothTimeAir = 0.8f;
+    public float smoothTimeAir = 1f;
 
     [Header("Vertical Movement")]
     public bool canJump = true;
-    public float jumpSpeed = 500f;
+    public float jumpSpeed = 10f;
     [SerializeField] Vector3 groundCheckPoint = Vector2.down;
     [SerializeField] LayerMask groundCheckMask;
     [SerializeField] float groundCheckRadius = 0.05f;
@@ -164,34 +164,42 @@ public class CommandStreamCharacter : MonoBehaviour
             case Action.Jump:
                 if (atGround)
                 {
-                    rb.AddForce(Vector2.up * jumpSpeed);
+                    var vel = rb.velocity;
+                    vel.y = jumpSpeed;
+                    rb.velocity = vel;
+                    velocity = Vector2.zero;
                     // TODO: FX (dust cloud)
                 }
                 else if (canWallJump && atLeftWall)
                 {
-                    rb.AddForce(new Vector2(jumpSpeed, 0.75f * jumpSpeed));
+                    rb.velocity = new Vector2(jumpSpeed, jumpSpeed);
                     velocity = Vector2.zero;
                     // TODO: FX (dust cloud)
                 }
                 else if (canWallJump && atRightWall)
                 {
-                    rb.AddForce(new Vector2(-jumpSpeed, 0.75f * jumpSpeed));
+                    rb.velocity = new Vector2(-jumpSpeed, jumpSpeed);
                     velocity = Vector2.zero;
                     // TODO: FX (dust cloud)
                 }
                 else if (canDoubleJump && !hasDoubleJumped)
                 {
-                    rb.AddForce(Vector2.up * jumpSpeed);
+                    var vel = rb.velocity;
+                    vel.y = jumpSpeed;
+                    rb.velocity = vel;
+                    velocity = Vector2.zero;
                     // TODO: FX (dust cloud)
                     hasDoubleJumped = true;
                 }
                 break;
             case Action.Slide:
-                var vel = rb.velocity;
-                vel.x += horisontalMovement * slideSpeed;
-                rb.velocity = vel;
-                velocity = Vector2.zero;
-                // TODO: FX (dust cloud)
+                {
+                    var vel = rb.velocity;
+                    vel.x += horisontalMovement * slideSpeed;
+                    rb.velocity = vel;
+                    velocity = Vector2.zero;
+                    // TODO: FX (dust cloud)
+                }
                 break;
             case Action.Attack:
                 Debug.LogWarning("Attacking not implemented");
@@ -246,9 +254,9 @@ public class CommandStreamCharacter : MonoBehaviour
         else
             vel = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTimeAir);
         if (atRightWall && !atGround && horisontalMovement > 0)
-            vel.y = 0f;
+            vel.y = Mathf.Max(vel.y, 0f);
         if (atLeftWall && !atGround && horisontalMovement < 0)
-            vel.y = 0f;
+            vel.y = Mathf.Max(vel.y, 0f);
         rb.velocity = vel;
     }
 
