@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] CommandStreamCharacter ghostPrefab;
     [SerializeField] Image timerBottom;
     [SerializeField] Image timerTop;
+    [SerializeField] TextMeshProUGUI timerText;
     public float resetTime = 12f;
     public int maxGhosts = 1;
 
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour
         ghosts = new List<CommandStreamCharacter>();
         instance = this;
         startTime = Time.time;
+        timerText.text = string.Format("{0}/{1}", 1, maxGhosts + 1);
     }
 
     private void OnDestroy()
@@ -37,7 +40,10 @@ public class GameManager : MonoBehaviour
         if (character.activePlayer)
             activePlayer = character;
         else
+        {
             ghosts.Add(character);
+            timerText.text = string.Format("{0}/{1}", ghosts.Count + 1, maxGhosts + 1);
+        }
     }
 
     // Update is called once per frame
