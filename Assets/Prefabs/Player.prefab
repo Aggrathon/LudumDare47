@@ -167,16 +167,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePlayer: 1
   runSpeed: 10
-  smoothTime: 0.3
-  canJump: 0
+  smoothTime: 0.1
+  smoothTimeAir: 0.8
+  canJump: 1
   jumpSpeed: 500
   groundCheckPoint: {x: 0, y: -1, z: 0}
   groundCheckMask:
     serializedVersion: 2
     m_Bits: 1
   groundCheckRadius: 0.05
-  canDoubleJump: 0
-  canSlide: 0
+  canDoubleJump: 1
+  canWallJump: 1
+  wallCheckPointLeft: {x: -0.5, y: 0, z: 0}
+  wallCheckPointRight: {x: 0.5, y: 0, z: 0}
+  canSlide: 1
   slideSpeed: 18
   slideCooldown: 0.5
-  canAttack: 0
+  canAttack: 1

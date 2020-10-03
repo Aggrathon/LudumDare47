@@ -34,15 +34,20 @@ public class CommandStreamCharacter : MonoBehaviour
 
     [Header("Horisontal Movement")]
     public float runSpeed = 10f;
-    public float smoothTime = 0.3f;
+    public float smoothTime = 0.1f;
+    public float smoothTimeAir = 0.8f;
 
     [Header("Vertical Movement")]
     public bool canJump = true;
     public float jumpSpeed = 500f;
-    [SerializeField] Vector3 groundCheckPoint = Vector2.zero;
+    [SerializeField] Vector3 groundCheckPoint = Vector2.down;
     [SerializeField] LayerMask groundCheckMask;
     [SerializeField] float groundCheckRadius = 0.05f;
     public bool canDoubleJump = true;
+    public bool canWallJump = true;
+    [SerializeField] Vector3 wallCheckPointLeft = Vector2.left;
+    [SerializeField] Vector3 wallCheckPointRight = Vector2.right;
+
 
     [Header("Sliding")]
     public bool canSlide = true;
@@ -102,9 +107,9 @@ public class CommandStreamCharacter : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (canSlide && Time.time - slideCooldown > slideTime)
+                if (canSlide && Time.time > slideTime)
                 {
-                    slideTime = Time.time;
+                    slideTime = Time.time + slideCooldown;
                     RecordAction(Action.Slide);
                 }
             }
@@ -122,6 +127,16 @@ public class CommandStreamCharacter : MonoBehaviour
                 index++;
             }
         }
+    }
+
+    internal void SetSpawn(Vector3 pos)
+    {
+        startPos = pos;
+        stream.Clear();
+        if (horisontalMovement > 0)
+            AddActionToStreamNow(Action.RightDown);
+        else if (horisontalMovement < 0)
+            AddActionToStreamNow(Action.LeftDown);
     }
 
     void TakeAction(Action action)
@@ -145,11 +160,28 @@ public class CommandStreamCharacter : MonoBehaviour
                 MaybeFlip();
                 break;
             case Action.Jump:
-                if (isGrounded || (canDoubleJump && !hasDoubleJumped))
+                if (isGrounded)
                 {
                     rb.AddForce(Vector2.up * jumpSpeed);
-                    hasDoubleJumped = true;
                     // TODO: FX (dust cloud)
+                }
+                else if (canWallJump && Physics2D.OverlapCircle(transform.position + wallCheckPointLeft, groundCheckRadius, groundCheckMask))
+                {
+                    rb.AddForce(new Vector2(jumpSpeed, 0.75f * jumpSpeed));
+                    velocity = Vector2.zero;
+                    // TODO: FX (dust cloud)
+                }
+                else if (canWallJump && Physics2D.OverlapCircle(transform.position + wallCheckPointRight, groundCheckRadius, groundCheckMask))
+                {
+                    rb.AddForce(new Vector2(jumpSpeed, 0.75f * jumpSpeed));
+                    velocity = Vector2.zero;
+                    // TODO: FX (dust cloud)
+                }
+                else if (canDoubleJump && !hasDoubleJumped)
+                {
+                    rb.AddForce(Vector2.up * jumpSpeed);
+                    // TODO: FX (dust cloud)
+                    hasDoubleJumped = true;
                 }
                 break;
             case Action.Slide:
@@ -200,14 +232,14 @@ public class CommandStreamCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
+        isGrounded = Physics2D.OverlapCircle(transform.position + groundCheckPoint, groundCheckRadius, groundCheckMask);
+        hasDoubleJumped = isGrounded | hasDoubleJumped;
         var vel = rb.velocity;
         vel.x = horisontalMovement * runSpeed;
-        rb.velocity = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTime);
-        isGrounded = Physics2D.OverlapCircle(transform.position + groundCheckPoint, groundCheckRadius, groundCheckMask);
-        if (isGrounded)
-        {
-            hasDoubleJumped = false;
-        }
+        if (isGrounded && Time.time > slideTime)
+            rb.velocity = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTime);
+        else
+            rb.velocity = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTimeAir);
     }
 
     public void Reset()
@@ -250,5 +282,7 @@ public class CommandStreamCharacter : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position + groundCheckPoint, groundCheckRadius);
+        Gizmos.DrawWireSphere(transform.position + wallCheckPointLeft, groundCheckRadius);
+        Gizmos.DrawWireSphere(transform.position + wallCheckPointRight, groundCheckRadius);
     }
 }

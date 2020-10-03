@@ -86,4 +86,13 @@ public class GameManager : MonoBehaviour
         }
         startTime = Time.time;
     }
+
+    public void SetSpawn(Vector3 pos)
+    {
+        if (activePlayer)
+        {
+            activePlayer.SetSpawn(pos);
+            startTime = Time.time;
+        }
+    }
 }
