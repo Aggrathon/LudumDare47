@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
             else
             {
                 ghost = Instantiate(ghostPrefab, activePlayer.transform.position, activePlayer.transform.rotation);
-                ghosts.Add(ghost);
             }
             ghost.SetStream(stream);
         }

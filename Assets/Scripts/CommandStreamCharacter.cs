@@ -67,7 +67,9 @@ public class CommandStreamCharacter : MonoBehaviour
     private Vector2 velocity;
     private float slideTime;
     private bool hasDoubleJumped;
-    private bool isGrounded;
+    private bool atGround;
+    private bool atLeftWall;
+    private bool atRightWall;
 
     private void Start()
     {
@@ -160,20 +162,20 @@ public class CommandStreamCharacter : MonoBehaviour
                 MaybeFlip();
                 break;
             case Action.Jump:
-                if (isGrounded)
+                if (atGround)
                 {
                     rb.AddForce(Vector2.up * jumpSpeed);
                     // TODO: FX (dust cloud)
                 }
-                else if (canWallJump && Physics2D.OverlapCircle(transform.position + wallCheckPointLeft, groundCheckRadius, groundCheckMask))
+                else if (canWallJump && atLeftWall)
                 {
                     rb.AddForce(new Vector2(jumpSpeed, 0.75f * jumpSpeed));
                     velocity = Vector2.zero;
                     // TODO: FX (dust cloud)
                 }
-                else if (canWallJump && Physics2D.OverlapCircle(transform.position + wallCheckPointRight, groundCheckRadius, groundCheckMask))
+                else if (canWallJump && atRightWall)
                 {
-                    rb.AddForce(new Vector2(jumpSpeed, 0.75f * jumpSpeed));
+                    rb.AddForce(new Vector2(-jumpSpeed, 0.75f * jumpSpeed));
                     velocity = Vector2.zero;
                     // TODO: FX (dust cloud)
                 }
@@ -232,14 +234,22 @@ public class CommandStreamCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(transform.position + groundCheckPoint, groundCheckRadius, groundCheckMask);
-        hasDoubleJumped = isGrounded | hasDoubleJumped;
+        atGround = Physics2D.OverlapCircle(transform.position + groundCheckPoint, groundCheckRadius, groundCheckMask);
+        if (atGround)
+            hasDoubleJumped = false;
+        atRightWall = Physics2D.OverlapCircle(transform.position + wallCheckPointRight, groundCheckRadius, groundCheckMask);
+        atLeftWall = Physics2D.OverlapCircle(transform.position + wallCheckPointLeft, groundCheckRadius, groundCheckMask);
         var vel = rb.velocity;
         vel.x = horisontalMovement * runSpeed;
-        if (isGrounded && Time.time > slideTime)
-            rb.velocity = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTime);
+        if (atGround && Time.time > slideTime)
+            vel = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTime);
         else
-            rb.velocity = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTimeAir);
+            vel = Vector2.SmoothDamp(rb.velocity, vel, ref velocity, smoothTimeAir);
+        if (atRightWall && !atGround && horisontalMovement > 0)
+            vel.y = 0f;
+        if (atLeftWall && !atGround && horisontalMovement < 0)
+            vel.y = 0f;
+        rb.velocity = vel;
     }
 
     public void Reset()
@@ -252,7 +262,7 @@ public class CommandStreamCharacter : MonoBehaviour
         rb.WakeUp();
         slideTime = 0f;
         hasDoubleJumped = false;
-        isGrounded = true;
+        atGround = true;
         gameObject.SetActive(true);
         if (activePlayer)
         {
