@@ -226,9 +226,9 @@ public class CommandStreamCharacter : MonoBehaviour
         {
             stream.Clear();
             if (horisontalMovement > 0)
-                RecordAction(Action.RightDown);
+                AddActionToStreamNow(Action.RightDown);
             else if (horisontalMovement < 0)
-                RecordAction(Action.LeftDown);
+                AddActionToStreamNow(Action.LeftDown);
         }
         else
         {

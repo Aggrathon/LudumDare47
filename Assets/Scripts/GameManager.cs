@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] Image timerBottom;
     [SerializeField] Image timerTop;
     public float resetTime = 12f;
+    public int maxGhosts = 1;
 
     private List<CommandStreamCharacter> ghosts;
     private CommandStreamCharacter activePlayer;
     private float startTime;
+    private int oldestGhost = 0;
 
     private void Awake()
     {
@@ -69,9 +71,18 @@ public class GameManager : MonoBehaviour
             var stream = activePlayer.GetStream();
             activePlayer.SetStream(new List<CommandStreamCharacter.Event>());
             activePlayer.Reset();
-            var ghost = Instantiate<CommandStreamCharacter>(ghostPrefab, activePlayer.transform.position, activePlayer.transform.rotation);
+            CommandStreamCharacter ghost;
+            if (ghosts.Count >= maxGhosts)
+            {
+                ghost = ghosts[oldestGhost];
+                oldestGhost = (oldestGhost + 1) % maxGhosts;
+            }
+            else
+            {
+                ghost = Instantiate(ghostPrefab, activePlayer.transform.position, activePlayer.transform.rotation);
+                ghosts.Add(ghost);
+            }
             ghost.SetStream(stream);
-            ghosts.Add(ghost);
         }
         startTime = Time.time;
     }
