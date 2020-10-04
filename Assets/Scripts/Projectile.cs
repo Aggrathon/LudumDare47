@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
             {
                 chr.Die();
             }
-            else
+            else if (!other.isTrigger)
             {
                 switch (onHit)
                 {

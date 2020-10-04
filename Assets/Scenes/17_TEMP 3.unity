@@ -395,7 +395,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4051379592179072317, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_text
-      value: "<b>TODO:</b>  Level about \nconfronting the Lord of Time"
+      value: "<b>TODO:</b>  Level about \nconfronting the Lord of Time.\n(The game
+        is not over yet!)"
       objectReference: {fileID: 0}
     - target: {fileID: 4051379592179072318, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_AnchoredPosition.x

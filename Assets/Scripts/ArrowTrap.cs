@@ -33,4 +33,10 @@ public class ArrowTrap : MonoBehaviour
                 audio.Play();
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + prefabLaunchPoint, 0.2f);
+    }
 }
