@@ -46,13 +46,13 @@ public class CommandStreamCharacter : MonoBehaviour
     [Header("Vertical Movement")]
     public bool canJump = true;
     public float jumpSpeed = 10f;
-    [SerializeField] Vector3 groundCheckPoint = Vector2.down;
+    [SerializeField] Vector2 groundCheckPoint = Vector2.zero;
     [SerializeField] LayerMask groundCheckMask;
     [SerializeField] float groundCheckRadius = 0.05f;
     public bool canDoubleJump = true;
     public bool canWallJump = true;
-    [SerializeField] Vector3 wallCheckPointLeft = Vector2.left;
-    [SerializeField] Vector3 wallCheckPointRight = Vector2.right;
+    [SerializeField] Vector2 wallCheckPointLeft = new Vector2(-0.5f, 1f);
+    [SerializeField] Vector2 wallCheckPointRight = new Vector2(0.5f, 1f);
 
     [Header("Sliding")]
     public bool canSlide = true;
@@ -60,6 +60,11 @@ public class CommandStreamCharacter : MonoBehaviour
 
     [Header("Attacking")]
     public bool canAttack = true;
+    public float attackDuration = 0.5f;
+    public float attackCooldown = 0.2f;
+    public Vector2 attackOrigin = Vector2.up;
+    public float attackDistance = 0.8f;
+    [SerializeField] TrailRenderer attackFX;
 
     // Privates
     private float startTime;
@@ -74,6 +79,8 @@ public class CommandStreamCharacter : MonoBehaviour
     private bool atGround;
     private bool atLeftWall;
     private bool atRightWall;
+    private float attackTime;
+    private Collider2D[] raycastCache;
 
     private void Start()
     {
@@ -84,6 +91,7 @@ public class CommandStreamCharacter : MonoBehaviour
         Reset();
         if (GameManager.instance != null)
             GameManager.instance.RegisterCharacter(this);
+        raycastCache = new Collider2D[10];
     }
 
     void Update()
@@ -120,7 +128,7 @@ public class CommandStreamCharacter : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
             {
-                if (canAttack)
+                if (canAttack && Time.time > attackTime + attackDuration + attackCooldown)
                     RecordAction(Action.Attack);
             }
             // if (stream.Count > 0)
@@ -135,7 +143,6 @@ public class CommandStreamCharacter : MonoBehaviour
             {
                 if (Vector3.Distance(stream[index].position, rb.position) < groundCheckRadius * 0.8)
                 {
-                    // transform.position = stream[index].position;
                     rb.position = stream[index].position;
                     rb.velocity = stream[index].velocity;
                 }
@@ -230,7 +237,8 @@ public class CommandStreamCharacter : MonoBehaviour
                 }
                 break;
             case Action.Attack:
-                Debug.LogWarning("Attacking not implemented");
+                attackTime = Time.time;
+                StartCoroutine(AttackCoroutine());
                 break;
             case Action.Disable:
                 gameObject.SetActive(false);
@@ -272,11 +280,11 @@ public class CommandStreamCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        atGround = Physics2D.OverlapCircle(transform.position + groundCheckPoint, groundCheckRadius, groundCheckMask);
+        atGround = Physics2D.OverlapCircle(rb.position + groundCheckPoint, groundCheckRadius, groundCheckMask);
         if (atGround)
             hasDoubleJumped = false;
-        atRightWall = Physics2D.OverlapCircle(transform.position + wallCheckPointRight, groundCheckRadius, groundCheckMask);
-        atLeftWall = Physics2D.OverlapCircle(transform.position + wallCheckPointLeft, groundCheckRadius, groundCheckMask);
+        atRightWall = Physics2D.OverlapCircle(rb.position + wallCheckPointRight, groundCheckRadius, groundCheckMask);
+        atLeftWall = Physics2D.OverlapCircle(rb.position + wallCheckPointLeft, groundCheckRadius, groundCheckMask);
         var vel = rb.velocity;
         vel.x = horisontalMovement * runSpeed;
         if (atGround && Time.time > slideTime)
@@ -290,6 +298,41 @@ public class CommandStreamCharacter : MonoBehaviour
         rb.velocity = vel;
     }
 
+    IEnumerator AttackCoroutine()
+    {
+        float dir = transform.localScale.x;
+        attackFX.transform.position = rb.position + attackOrigin + new Vector2(dir * Mathf.Cos(-1.22f), Mathf.Sin(-1.22f)) * attackDistance;
+        //TODO: sound
+        yield return new WaitForFixedUpdate();
+        attackFX.Clear();
+        attackFX.gameObject.SetActive(true);
+        var frac = (Time.time - attackTime) / attackDuration;
+        while (frac < 1.0)
+        {
+            float angle = 1.22f; // = 70 degrees
+            angle *= 2 * frac - 1f;
+            var pos = rb.position + attackOrigin + new Vector2(dir * Mathf.Cos(angle), Mathf.Sin(angle)) * attackDistance;
+            attackFX.transform.position = pos;
+            int hits = Physics2D.OverlapCircleNonAlloc(pos, 0.1f, raycastCache);
+            if (hits > 0)
+            {
+                for (int i = 0; i < hits; i++)
+                {
+                    if (raycastCache[i].attachedRigidbody != null && raycastCache[i].attachedRigidbody != rb)
+                    {
+                        var d = raycastCache[i].attachedRigidbody.GetComponent<Destructable>();
+                        if (d != null)
+                            d.Die();
+                    }
+                }
+            }
+            yield return new WaitForFixedUpdate();
+            frac = (Time.time - attackTime) / attackDuration;
+        }
+        yield return new WaitForSeconds(0.1f);
+        attackFX.gameObject.SetActive(false);
+    }
+
     public void Reset()
     {
         startTime = Time.time;
@@ -299,7 +342,7 @@ public class CommandStreamCharacter : MonoBehaviour
         rb.velocity = Vector2.zero;
         velocity = Vector2.zero;
         rb.WakeUp();
-        slideTime = 0f;
+        slideTime = -10f;
         hasDoubleJumped = false;
         atGround = true;
         atRightWall = false;
@@ -314,6 +357,9 @@ public class CommandStreamCharacter : MonoBehaviour
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
                 RecordAction(Action.LeftDown);
         }
+        attackTime = -10f;
+        attackFX.gameObject.SetActive(false);
+        StopAllCoroutines();
     }
 
     public void SetStream(List<Event> stream)
@@ -328,10 +374,12 @@ public class CommandStreamCharacter : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position + groundCheckPoint, groundCheckRadius);
-        Gizmos.DrawWireSphere(transform.position + wallCheckPointLeft, groundCheckRadius);
-        Gizmos.DrawWireSphere(transform.position + wallCheckPointRight, groundCheckRadius);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position + (Vector3)groundCheckPoint, groundCheckRadius);
+        Gizmos.DrawWireSphere(transform.position + (Vector3)wallCheckPointLeft, groundCheckRadius);
+        Gizmos.DrawWireSphere(transform.position + (Vector3)wallCheckPointRight, groundCheckRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + (Vector3)attackOrigin, attackDistance);
     }
 
     public void EnableAttacking()

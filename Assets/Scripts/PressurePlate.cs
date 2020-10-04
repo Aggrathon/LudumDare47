@@ -18,10 +18,13 @@ public class PressurePlate : MonoBehaviour
         if (pressers == 1)
         {
             onPressed.Invoke();
-            var scale = visual.transform.localScale;
-            scale.y = 0.1f;
-            visual.transform.localScale = scale;
-            visual.color = Color.gray;
+            if (visual)
+            {
+                var scale = visual.transform.localScale;
+                scale.y = 0.1f;
+                visual.transform.localScale = scale;
+                visual.color = Color.gray;
+            }
         }
     }
 
@@ -31,10 +34,13 @@ public class PressurePlate : MonoBehaviour
         if (pressers == 0)
         {
             onReleased.Invoke();
-            var scale = visual.transform.localScale;
-            scale.y = 0.2f;
-            visual.transform.localScale = scale;
-            visual.color = Color.white;
+            if (visual)
+            {
+                var scale = visual.transform.localScale;
+                scale.y = 0.2f;
+                visual.transform.localScale = scale;
+                visual.color = Color.white;
+            }
         }
     }
 }

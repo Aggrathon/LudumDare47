@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         ghosts = new List<CommandStreamCharacter>();
+        respawns = new List<Destructable>();
         instance = this;
         startTime = Time.time;
         timerText.text = string.Format("{0}/{1}", 1, maxGhosts + 1);
@@ -87,13 +88,14 @@ public class GameManager : MonoBehaviour
             {
                 ghost = ghosts[oldestGhost];
                 oldestGhost = (oldestGhost + 1) % maxGhosts;
+                ghost.SetStream(stream);
+                ghost.SetSpawn(activePlayer.GetSpawn());
             }
             else
             {
-                ghost = Instantiate(ghostPrefab, activePlayer.transform.position, activePlayer.transform.rotation);
+                ghost = Instantiate(ghostPrefab, activePlayer.GetSpawn(), activePlayer.transform.rotation);
+                ghost.SetStream(stream);
             }
-            ghost.SetStream(stream);
-            ghost.SetSpawn(activePlayer.GetSpawn());
         }
         startTime = Time.time;
         foreach (var s in respawns)
