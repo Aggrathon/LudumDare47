@@ -516,8 +516,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Use  <b>W</b> / <b>Up</b> / <b>Space</b>  to jump
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
+  m_sharedMaterial: {fileID: -434892922828022936, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1197,7 +1197,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6139256870918935146, guid: 836082154b235644db7d5d6fca12db56, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 6139256870918935146, guid: 836082154b235644db7d5d6fca12db56, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1270,7 +1270,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9120844736654262740, guid: d94d4f845fb7d2040be78ede1b6362ce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 9120844736654262740, guid: d94d4f845fb7d2040be78ede1b6362ce, type: 3}
       propertyPath: m_LocalPosition.y

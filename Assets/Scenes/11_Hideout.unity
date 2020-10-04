@@ -2468,15 +2468,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4051379592179072317, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_text
-      value: "You can attack \nby pressing  <b>Shift</b>"
+      value: "You can attack by\n  pressing  <b>Shift</b>"
       objectReference: {fileID: 0}
     - target: {fileID: 4051379592179072318, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 103.20141
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4051379592179072318, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 22.047863
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051379592179072318, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051379592179072318, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4051379593221291816, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_Name
@@ -2532,11 +2540,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4051379593221291829, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 52.67986
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 4051379593221291829, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 19.795214
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4051379593221291829, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2569,6 +2577,10 @@ PrefabInstance:
     - target: {fileID: 4051379593221291829, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051379593221291831, guid: b1fc2d9991328f944ac06ac631196764, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1fc2d9991328f944ac06ac631196764, type: 3}

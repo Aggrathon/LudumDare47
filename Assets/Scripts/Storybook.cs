@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Storybook : MonoBehaviour
 {
-
+    public RectTransform pages;
     [SerializeField] Button nextButton;
     [SerializeField] Button prevButton;
 
@@ -19,11 +19,11 @@ public class Storybook : MonoBehaviour
         prevButton.onClick.AddListener(Previous);
         prevButton.gameObject.SetActive(false);
         currentPanel = 0;
-        transform.GetChild(currentPanel).gameObject.SetActive(true);
-        for (int i = currentPanel + 1; i < transform.childCount - 1; i++)
+        for (int i = 0; i < pages.childCount; i++)
         {
-            transform.GetChild(i).gameObject.SetActive(false);
+            pages.GetChild(i).gameObject.SetActive(false);
         }
+        pages.GetChild(currentPanel).gameObject.SetActive(true);
         eatFirstNext = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
 
     }
@@ -43,12 +43,12 @@ public class Storybook : MonoBehaviour
 
     public void Continue()
     {
-        if (currentPanel < transform.childCount - 2)
+        if (currentPanel < pages.childCount - 1)
         {
             prevButton.gameObject.SetActive(true);
-            transform.GetChild(currentPanel).gameObject.SetActive(false);
+            pages.GetChild(currentPanel).gameObject.SetActive(false);
             currentPanel++;
-            transform.GetChild(currentPanel).gameObject.SetActive(true);
+            pages.GetChild(currentPanel).gameObject.SetActive(true);
         }
         else
         {
@@ -61,9 +61,9 @@ public class Storybook : MonoBehaviour
     {
         if (currentPanel > 0)
         {
-            transform.GetChild(currentPanel).gameObject.SetActive(false);
+            pages.GetChild(currentPanel).gameObject.SetActive(false);
             currentPanel--;
-            transform.GetChild(currentPanel).gameObject.SetActive(true);
+            pages.GetChild(currentPanel).gameObject.SetActive(true);
             if (currentPanel == 0)
                 prevButton.gameObject.SetActive(false);
         }
