@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public int maxGhosts = 1;
 
     private List<CommandStreamCharacter> ghosts;
+    private List<Destructable> respawns;
     private CommandStreamCharacter activePlayer;
     private float startTime;
     private int oldestGhost = 0;
@@ -44,6 +45,11 @@ public class GameManager : MonoBehaviour
             ghosts.Add(character);
             timerText.text = string.Format("{0}/{1}", ghosts.Count + 1, maxGhosts + 1);
         }
+    }
+
+    public void RegisterRespawn(Destructable character)
+    {
+        respawns.Add(character);
     }
 
     void Update()
@@ -90,6 +96,10 @@ public class GameManager : MonoBehaviour
             ghost.SetSpawn(activePlayer.GetSpawn());
         }
         startTime = Time.time;
+        foreach (var s in respawns)
+        {
+            s.gameObject.SetActive(true);
+        }
     }
 
     public void SetSpawn(Vector3 pos)

@@ -41,7 +41,7 @@ public class CommandStreamCharacter : MonoBehaviour
     [Header("Horisontal Movement")]
     public float runSpeed = 10f;
     public float smoothTime = 0.1f;
-    public float smoothTimeAir = 1f;
+    public float smoothTimeAir = 0.8f;
 
     [Header("Vertical Movement")]
     public bool canJump = true;
@@ -57,7 +57,6 @@ public class CommandStreamCharacter : MonoBehaviour
     [Header("Sliding")]
     public bool canSlide = true;
     public float slideSpeed = 18f;
-    public float slideCooldown = 0.5f;
 
     [Header("Attacking")]
     public bool canAttack = true;
@@ -146,6 +145,15 @@ public class CommandStreamCharacter : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        if (activePlayer)
+            AddActionToStreamNow(Action.Disable);
+        horisontalMovement = 0;
+        velocity = Vector2.zero;
+        rb.velocity = Vector2.zero;
+    }
+
     internal Vector3 GetSpawn()
     {
         return startPos;
@@ -213,7 +221,7 @@ public class CommandStreamCharacter : MonoBehaviour
                 break;
             case Action.Slide:
                 {
-                    slideTime = Time.time + slideCooldown;
+                    slideTime = Time.time + smoothTimeAir - 0.1f;
                     var vel = rb.velocity;
                     vel.x += horisontalMovement * slideSpeed;
                     rb.velocity = vel;
@@ -297,17 +305,14 @@ public class CommandStreamCharacter : MonoBehaviour
         atRightWall = false;
         atLeftWall = false;
         gameObject.SetActive(true);
+        horisontalMovement = 0f;
         if (activePlayer)
         {
             stream.Clear();
-            if (horisontalMovement > 0)
-                AddActionToStreamNow(Action.RightDown);
-            else if (horisontalMovement < 0)
-                AddActionToStreamNow(Action.LeftDown);
-        }
-        else
-        {
-            horisontalMovement = 0f;
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                RecordAction(Action.RightDown);
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                RecordAction(Action.LeftDown);
         }
     }
 
@@ -327,5 +332,10 @@ public class CommandStreamCharacter : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + groundCheckPoint, groundCheckRadius);
         Gizmos.DrawWireSphere(transform.position + wallCheckPointLeft, groundCheckRadius);
         Gizmos.DrawWireSphere(transform.position + wallCheckPointRight, groundCheckRadius);
+    }
+
+    public void EnableAttacking()
+    {
+        canAttack = true;
     }
 }

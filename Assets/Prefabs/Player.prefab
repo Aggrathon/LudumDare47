@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 6139256870918935148}
   - component: {fileID: 6139256870918935147}
   - component: {fileID: 6139256870918935151}
+  - component: {fileID: -4161922881753839475}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -182,5 +183,17 @@ MonoBehaviour:
   wallCheckPointRight: {x: 0.5, y: 0, z: 0}
   canSlide: 1
   slideSpeed: 15
-  slideCooldown: 0.8
   canAttack: 1
+--- !u!114 &-4161922881753839475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6139256870918935150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669958630dab57e4385acb30439d0ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathFX: {fileID: 0}
