@@ -33,7 +33,7 @@ public class Goal : MonoBehaviour
 
     IEnumerator DelayedNextLevel()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         NextLevel();
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Destructable : MonoBehaviour
 {
     public GameObject deathFX;
+    public Vector3 fxOffset;
 
     private void Start()
     {
@@ -15,7 +16,7 @@ public class Destructable : MonoBehaviour
     public void Die()
     {
         if (deathFX)
-            Instantiate(deathFX, transform.position, transform.rotation);
+            Instantiate(deathFX, transform.position + fxOffset, transform.rotation);
         gameObject.SetActive(false);
     }
 }

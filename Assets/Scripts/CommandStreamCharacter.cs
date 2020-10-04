@@ -37,6 +37,7 @@ public class CommandStreamCharacter : MonoBehaviour
 
     public bool activePlayer = false;
     // public float positionPingInterval = 0.1f;
+    public ParticleSystem moveFX;
 
     [Header("Horisontal Movement")]
     public float runSpeed = 10f;
@@ -81,6 +82,7 @@ public class CommandStreamCharacter : MonoBehaviour
     private bool atRightWall;
     private float attackTime;
     private Collider2D[] raycastCache;
+    private AudioSource attackAudio;
 
     private void Start()
     {
@@ -92,6 +94,7 @@ public class CommandStreamCharacter : MonoBehaviour
         if (GameManager.instance != null)
             GameManager.instance.RegisterCharacter(this);
         raycastCache = new Collider2D[10];
+        attackAudio = attackFX.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -203,19 +206,22 @@ public class CommandStreamCharacter : MonoBehaviour
                     vel.y = jumpSpeed;
                     rb.velocity = vel;
                     velocity = Vector2.zero;
-                    // TODO: FX (dust cloud)
+                    if (moveFX)
+                        moveFX.Play();
                 }
                 else if (canWallJump && atLeftWall)
                 {
                     rb.velocity = new Vector2(jumpSpeed, jumpSpeed);
                     velocity = Vector2.zero;
-                    // TODO: FX (dust cloud)
+                    if (moveFX)
+                        moveFX.Play();
                 }
                 else if (canWallJump && atRightWall)
                 {
                     rb.velocity = new Vector2(-jumpSpeed, jumpSpeed);
                     velocity = Vector2.zero;
-                    // TODO: FX (dust cloud)
+                    if (moveFX)
+                        moveFX.Play();
                 }
                 else if (canDoubleJump && !hasDoubleJumped)
                 {
@@ -223,18 +229,20 @@ public class CommandStreamCharacter : MonoBehaviour
                     vel.y = jumpSpeed;
                     rb.velocity = vel;
                     velocity = Vector2.zero;
-                    // TODO: FX (dust cloud)
                     hasDoubleJumped = true;
+                    if (moveFX)
+                        moveFX.Play();
                 }
                 break;
             case Action.Slide:
                 {
+                    if (moveFX)
+                        moveFX.Play();
                     slideTime = Time.time + smoothTimeAir - 0.1f;
                     var vel = rb.velocity;
                     vel.x += horisontalMovement * slideSpeed;
                     rb.velocity = vel;
                     velocity = Vector2.zero;
-                    // TODO: FX (dust cloud)
                 }
                 break;
             case Action.Attack:
@@ -281,7 +289,10 @@ public class CommandStreamCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
+        bool wasGrounded = atGround;
         atGround = Physics2D.OverlapCircle(rb.position + groundCheckPoint, groundCheckRadius, groundCheckMask);
+        if (!wasGrounded & atGround && moveFX)
+            moveFX.Play();
         if (atGround)
             hasDoubleJumped = false;
         atRightWall = Physics2D.OverlapCircle(rb.position + wallCheckPointRight, groundCheckRadius, groundCheckMask);
@@ -307,6 +318,8 @@ public class CommandStreamCharacter : MonoBehaviour
         yield return new WaitForFixedUpdate();
         attackFX.Clear();
         attackFX.gameObject.SetActive(true);
+        if (attackAudio)
+            attackAudio.Play();
         var frac = (Time.time - attackTime) / attackDuration;
         while (frac < 1.0)
         {

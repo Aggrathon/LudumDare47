@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4161922881753839475, guid: 836082154b235644db7d5d6fca12db56, type: 3}
+      propertyPath: deathFX
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 246627450, guid: 836082154b235644db7d5d6fca12db56, type: 3}
       propertyPath: m_SortingLayerID
       value: 2131633027
@@ -31,6 +35,10 @@ PrefabInstance:
       propertyPath: m_Parameters.colorGradient.key0.a
       value: 0.39215687
       objectReference: {fileID: 0}
+    - target: {fileID: 6098373782539348689, guid: 836082154b235644db7d5d6fca12db56, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 36dffc79f1017b447b1602a07b49e5e2, type: 3}
     - target: {fileID: 6139256870918935146, guid: 836082154b235644db7d5d6fca12db56, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -94,6 +102,10 @@ PrefabInstance:
     - target: {fileID: 6139256870918935151, guid: 836082154b235644db7d5d6fca12db56, type: 3}
       propertyPath: activePlayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6139256870918935151, guid: 836082154b235644db7d5d6fca12db56, type: 3}
+      propertyPath: moveFX
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 836082154b235644db7d5d6fca12db56, type: 3}
