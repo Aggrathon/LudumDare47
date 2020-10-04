@@ -6,6 +6,9 @@ public class ArrowTrap : MonoBehaviour
 {
 
     public List<Projectile> projectiles;
+    public Projectile prefab;
+
+    public Vector3 prefabLaunchPoint;
 
     AudioSource audio;
 
@@ -20,6 +23,12 @@ public class ArrowTrap : MonoBehaviour
         {
             projectiles[projectiles.Count - 1].Fire();
             projectiles.RemoveAt(projectiles.Count - 1);
+            if (audio)
+                audio.Play();
+        }
+        else if (prefab != null)
+        {
+            Instantiate(prefab, transform.position + prefabLaunchPoint, transform.rotation).Fire();
             if (audio)
                 audio.Play();
         }

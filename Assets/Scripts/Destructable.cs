@@ -6,6 +6,14 @@ public class Destructable : MonoBehaviour
 {
     public GameObject deathFX;
     public Vector3 fxOffset;
+    public bool resetPosition;
+
+    Vector3 origPos;
+
+    private void Awake()
+    {
+        origPos = transform.position;
+    }
 
     private void Start()
     {
@@ -18,5 +26,11 @@ public class Destructable : MonoBehaviour
         if (deathFX)
             Instantiate(deathFX, transform.position + fxOffset, transform.rotation);
         gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        if (resetPosition)
+            transform.position = origPos;
     }
 }
