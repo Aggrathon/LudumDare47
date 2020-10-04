@@ -5049,10 +5049,10 @@ MonoBehaviour:
   canSlide: 1
   slideSpeed: 15
   canAttack: 1
-  attackDuration: 0.3
+  attackDuration: 0.25
   attackCooldown: 0.2
   attackOrigin: {x: 0, y: 1}
-  attackDistance: 1
+  attackDistance: 1.5
   attackFX: {fileID: 2626387129065991476}
 --- !u!114 &-4161922881753839475
 MonoBehaviour:
@@ -5068,6 +5068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathFX: {fileID: 6157281336516275747, guid: 2a5a5468fb72bc94795b39152950fafe, type: 3}
   fxOffset: {x: 0, y: 1, z: 0}
+  resetPosition: 0
 --- !u!1 &8246303651060627049
 GameObject:
   m_ObjectHideFlags: 0

@@ -48,12 +48,15 @@ EditorBuildSettings:
     path: Assets/Scenes/13_TEMP 1.unity
     guid: 522b119461966c946a849d279099aa54
   - enabled: 1
+    path: Assets/Scenes/14_Story 3.unity
+    guid: 9eca3dde0fe3126419dc4a329124b7c8
+  - enabled: 1
     path: Assets/Scenes/15_Cellar.unity
     guid: 23cc739bcb88c124fb74695e34a22969
   - enabled: 1
     path: Assets/Scenes/17_TEMP 3.unity
     guid: fd6b211906dcf754fbe178be44cf3b51
   - enabled: 1
-    path: Assets/Scenes/18_Story 3.unity
+    path: Assets/Scenes/18_Story 4.unity
     guid: 87bd14abca6f0a2488b41194996668cd
   m_configObjects: {}

@@ -636,7 +636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"Convincing" The Lord of Time was easy.
+  m_text: '"Convincing" the Lord of Time was easy.
 
     Almost too easy...'
   m_isRightToLeft: 0
@@ -1584,7 +1584,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "But Blanc is not satisfied, \nand still wants more."
+  m_text: "But Blanc is not satisfied, \nand still wants something more."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
   m_sharedMaterial: {fileID: -434892922828022936, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
@@ -2280,7 +2280,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "On the way back the blessing \nturned into a curse."
+  m_text: "On the way back, the blessing \nturned into a curse."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
   m_sharedMaterial: {fileID: -434892922828022936, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
@@ -2346,7 +2346,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1634070403

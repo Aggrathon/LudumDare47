@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &211741068
 RectTransform:
   m_ObjectHideFlags: 0
@@ -174,7 +174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &353498955
 RectTransform:
   m_ObjectHideFlags: 0
@@ -252,10 +252,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Blanc was less familiar with that temple,
-
-    but it seemed like the
-    safer option.'
+  m_text: "This is not a temple that Blanc \noften (or ever) visits, but it \nseemed
+    like the safer option."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
   m_sharedMaterial: {fileID: -434892922828022936, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
@@ -389,7 +387,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Last time Blanc had entered through\n The Temple of Decay."
+  m_text: 'Last time Blanc had entered through
+
+    the Temple of Decay.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
   m_sharedMaterial: {fileID: -434892922828022936, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
@@ -659,7 +659,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'The Lord of Time resides in
 
-    The Endless Well.'
+    the Endless Well.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
   m_sharedMaterial: {fileID: -434892922828022936, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
@@ -793,10 +793,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'There is an alternative, lesser known,
-
-    entrance, through The Temple
-    of Rebirth.'
+  m_text: "There is a less known alternative,\nthe entrance through the \nTemple
+    of Rebirth."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}
   m_sharedMaterial: {fileID: -434892922828022936, guid: 98f7b076ad8e154468a221b3f087a06f, type: 2}

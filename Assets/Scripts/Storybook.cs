@@ -24,7 +24,7 @@ public class Storybook : MonoBehaviour
             pages.GetChild(i).gameObject.SetActive(false);
         }
         pages.GetChild(currentPanel).gameObject.SetActive(true);
-        eatFirstNext = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
+        eatFirstNext = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Space);
 
     }
 
@@ -32,7 +32,7 @@ public class Storybook : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
             Previous();
-        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D) || Input.GetKey(KeyCode.Space))
         {
             if (eatFirstNext)
                 eatFirstNext = false;

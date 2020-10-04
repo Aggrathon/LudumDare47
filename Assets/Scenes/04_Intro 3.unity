@@ -448,7 +448,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Blanc felt a bit more in control,
+  m_text: 'Blanc felt more in control,
 
     and decided to try some old tricks.'
   m_isRightToLeft: 0
