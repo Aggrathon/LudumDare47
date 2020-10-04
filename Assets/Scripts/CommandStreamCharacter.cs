@@ -166,13 +166,14 @@ public class CommandStreamCharacter : MonoBehaviour
         return startPos;
     }
 
-    internal void SetSpawn(Vector3 pos)
+    internal bool SetSpawn(Vector3 pos)
     {
         if (Vector3.Distance(startPos, pos) < 1f)
-            return;
+            return false;
         startPos = pos;
         if (rb != null)
             Reset();
+        return true;
     }
 
     void TakeAction(Action action)

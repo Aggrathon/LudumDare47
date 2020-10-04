@@ -11,6 +11,7 @@ public class Storybook : MonoBehaviour
     [SerializeField] Button prevButton;
 
     int currentPanel;
+    bool eatFirstNext;
 
     void Start()
     {
@@ -23,6 +24,8 @@ public class Storybook : MonoBehaviour
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }
+        eatFirstNext = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
+
     }
 
     void Update()
@@ -30,7 +33,12 @@ public class Storybook : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
             Previous();
         if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
-            Continue();
+        {
+            if (eatFirstNext)
+                eatFirstNext = false;
+            else
+                Continue();
+        }
     }
 
     public void Continue()

@@ -11,6 +11,12 @@ public class PressurePlate : MonoBehaviour
     public SpriteRenderer visual;
 
     private int pressers;
+    AudioSource audio;
+
+    private void Start()
+    {
+        audio = GetComponent<AudioSource>();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -25,6 +31,8 @@ public class PressurePlate : MonoBehaviour
                 visual.transform.localScale = scale;
                 visual.color = Color.gray;
             }
+            if (audio)
+                audio.Play();
         }
     }
 
@@ -41,6 +49,8 @@ public class PressurePlate : MonoBehaviour
                 visual.transform.localScale = scale;
                 visual.color = Color.white;
             }
+            if (audio)
+                audio.Play();
         }
     }
 }

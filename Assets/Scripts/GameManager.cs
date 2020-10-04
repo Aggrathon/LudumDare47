@@ -104,12 +104,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetSpawn(Vector3 pos)
+    public bool SetSpawn(Vector3 pos)
     {
+        startTime = Time.time;
         if (activePlayer)
-        {
-            activePlayer.SetSpawn(pos);
-            startTime = Time.time;
-        }
+            return activePlayer.SetSpawn(pos);
+        return false;
     }
 }
