@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private CommandStreamCharacter activePlayer;
     private float startTime;
     private int oldestGhost = 0;
+    AudioSource audio;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         startTime = Time.time;
         timerText.text = string.Format("{0}/{1}", 1, maxGhosts + 1);
+        audio = GetComponent<AudioSource>();
     }
 
     private void OnDestroy()
@@ -102,6 +104,8 @@ public class GameManager : MonoBehaviour
         {
             s.gameObject.SetActive(true);
         }
+        if (audio)
+            audio.Play();
     }
 
     public bool SetSpawn(Vector3 pos)
