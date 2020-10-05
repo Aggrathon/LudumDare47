@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour
             timerTop.fillAmount = 1.0f - frac;
             timerBottom.fillAmount = frac;
         }
+        if (Input.GetKeyUp(KeyCode.K))
+            FindObjectOfType<Goal>().NextLevel();
     }
 
     public void ResetTime()
